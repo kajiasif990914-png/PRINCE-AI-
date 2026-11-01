@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<meta name="description" content="PRINCE AI - your multilingual personal and business assistant">
+<link rel="manifest" href="manifest.webmanifest">
+<title>PRINCE AI</title>
+<style>
+:root{--bg:#0d0e10;--panel:#17191d;--panel2:#202329;--gold:#dfbd72;--muted:#a7a9af;--line:#30333a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f5f5f5;font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:20px 18px 14px;background:linear-gradient(135deg,#1b1b1b,#101114);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}
+.brand{font-size:25px;font-weight:800;letter-spacing:1.5px;color:var(--gold)}.tag{font-size:12px;color:var(--muted);margin-top:3px}
+.wrap{max-width:760px;margin:auto;padding:16px 14px 92px}.welcome{background:linear-gradient(135deg,#25221a,#17191d);border:1px solid #5d4c2b;border-radius:18px;padding:18px;margin-bottom:16px}.welcome h1{font-size:21px;margin:0 0 7px}.welcome p{color:#d0c8b6;margin:0;line-height:1.5}
+.controls{display:flex;gap:8px;align-items:center;margin:14px 0}.controls select{background:var(--panel);color:white;border:1px solid var(--line);border-radius:10px;padding:10px;flex:1}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tile{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:15px;min-height:108px;text-align:left;color:white}.tile .ico{font-size:24px}.tile b{display:block;margin:8px 0 3px}.tile small{color:var(--muted)}
+section{margin-top:20px}.section-title{font-weight:700;margin:0 0 10px;font-size:17px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:14px}
+#chatlog{height:210px;overflow:auto;display:flex;flex-direction:column;gap:9px;margin-bottom:10px}.bubble{padding:10px 12px;border-radius:13px;max-width:90%;line-height:1.45}.bot{background:var(--panel2);align-self:flex-start}.user{background:#4d3d1e;align-self:flex-end}
+.entry{display:flex;gap:8px}.entry input,.taskrow input{min-width:0;flex:1;background:#101114;color:white;border:1px solid var(--line);border-radius:10px;padding:12px}
+button{background:var(--gold);color:#17130b;border:0;border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer}.secondary{background:var(--panel2);color:#eee;border:1px solid var(--line)}
+.note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:9px}
+.taskrow{display:flex;gap:8px}.tasks{padding:0;list-style:none;margin:10px 0 0}.tasks li{padding:9px 2px;border-bottom:1px solid var(--line);color:#ddd}
+footer{color:var(--muted);font-size:11px;text-align:center;padding:22px 5px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="brand">PRINCE AI 👑</div><div class="tag" data-t="tag">Your Smart Personal Assistant</div></header>
+<main class="wrap">
+<div class="welcome"><h1 data-t="hello">Welcome to PRINCE AI</h1><p data-t="intro">One assistant for your jewelry business, Instagram, and everyday tasks.</p></div>
+<div class="controls">
+<label for="lang" data-t="language">Language</label>
+<select id="lang" aria-label="Language"><option value="en">English</option><option value="bn">বাংলা</option><option value="hi">हिन्दी</option></select>
+<button class="secondary" id="install" hidden data-t="install">Install</button>
+</div>
+<div class="grid">
+<button class="tile" data-section="chat"><span class="ico">💬</span><b data-t="chat">AI Chat</b><small data-t="chatSub">Ask questions in 3 languages</small></button>
+<button class="tile" data-section="jewelry"><span class="ico">💎</span><b data-t="jewelry">Jewelry Manager</b><small data-t="jewelrySub">Product details and business ideas</small></button>
+<button class="tile" data-section="instagram"><span class="ico">📱</span><b data-t="instagram">Instagram Manager</b><small data-t="instagramSub">Captions and content ideas</small></button>
+<button class="tile" data-section="tasks"><span class="ico">✅</span><b data-t="tasks">My Tasks</b><small data-t="tasksSub">Keep your daily work organized</small></button>
+<button class="tile" data-section="voice"><span class="ico">🎙️</span><b data-t="voice">Voice Assistant</b><small data-t="voiceSub">Speech demo (device support varies)</small></button>
+<button class="tile" data-section="reports"><span class="ico">📊</span><b data-t="reports">Business Reports</b><small data-t="reportsSub">Plan and track your work</small></button>
+</div>
+<section id="chatSection">
+<h2 class="section-title" data-t="chatTitle">Talk to PRINCE AI</h2>
+<div class="card"><div id="chatlog"><div class="bubble bot" data-t="firstMsg">Hello! I’m your PRINCE AI starter. Choose a language and try the demo.</div></div>
+<div class="entry"><input id="msg" placeholder="Type a message..." autocomplete="off"><button id="send" data-t="send">Send</button><button id="mic" class="secondary" aria-label="Speak">🎙️</button></div>
+<div class="note" data-t="chatNote">Demo mode: a live AI service is not connected yet. Your messages are not sent to an AI server.</div></div>
+</section>
+<section id="tasksSection"><h2 class="section-title" data-t="taskTitle">My Tasks</h2><div class="card"><div class="taskrow"><input id="taskInput" placeholder="Add a task"><button id="addTask" data-t="add">Add</button></div><ul class="tasks" id="taskList"></ul></div></section>
+<footer>PRINCE AI • Starter prototype • Connect an AI API and hosting to launch the live service.</footer>
+</main>
+<script>
+const translations={
+en:{tag:"Your Smart Personal Assistant",hello:"Welcome to PRINCE AI",intro:"One assistant for your jewelry business, Instagram, and everyday tasks.",language:"Language",install:"Install",chat:"AI Chat",chatSub:"Ask questions in 3 languages",jewelry:"Jewelry Manager",jewelrySub:"Product details and business ideas",instagram:"Instagram Manager",instagramSub:"Captions and content ideas",tasks:"My Tasks",tasksSub:"Keep your daily work organized",voice:"Voice Assistant",voiceSub:"Speech demo (device support varies)",reports:"Business Reports",reportsSub:"Plan and track your work",chatTitle:"Talk to PRINCE AI",firstMsg:"Hello! I’m your PRINCE AI starter. Choose a language and try the demo.",send:"Send",chatNote:"Demo mode: a live AI service is not connected yet. Your messages are not sent to an AI server.",taskTitle:"My Tasks",add:"Add",placeholder:"Type a message...",taskPlaceholder:"Add a task",demo:"This is a starter demo. A live AI connection needs to be configured.",voiceUnsupported:"Voice input is not supported by this browser.",heard:"I heard: ",added:"Task added."},
+bn:{tag:"আপনার স্মার্ট ব্যক্তিগত সহকারী",hello:"PRINCE AI-তে স্বাগতম",intro:"আপনার জুয়েলারি ব্যবসা, Instagram ও দৈনন্দিন কাজের জন্য এক সহকারী।",language:"ভাষা",install:"ইনস্টল",chat:"এআই চ্যাট",chatSub:"৩ ভাষায় প্রশ্ন করুন",jewelry:"জুয়েলারি ম্যানেজার",jewelrySub:"পণ্যের বিবরণ ও ব্যবসার ধারণা",instagram:"ইনস্টাগ্রাম ম্যানেজার",instagramSub:"ক্যাপশন ও কনটেন্ট আইডিয়া",tasks:"আমার কাজ",tasksSub:"দৈনন্দিন কাজ গুছিয়ে রাখুন",voice:"ভয়েস অ্যাসিস্ট্যান্ট",voiceSub:"কথা বলার ডেমো",reports:"ব্যবসার রিপোর্ট",reportsSub:"পরিকল্পনা ও কাজের হিসাব",chatTitle:"PRINCE AI-এর সঙ্গে কথা বলুন",firstMsg:"স্বাগতম! ভাষা নির্বাচন করে ডেমো ব্যবহার করুন।",send:"পাঠান",chatNote:"ডেমো মোড: এখনো লাইভ AI যুক্ত করা হয়নি। আপনার বার্তা কোনো AI সার্ভারে পাঠানো হচ্ছে না।",taskTitle:"আমার কাজ",add:"যোগ করুন",placeholder:"বার্তা লিখুন...",taskPlaceholder:"একটি কাজ লিখুন",demo:"এটি প্রাথমিক ডেমো। লাইভ AI চালু করতে AI সংযোগ সেটআপ করতে হবে।",voiceUnsupported:"এই ব্রাউজারে ভয়েস ইনপুট সমর্থিত নয়।",heard:"আমি শুনেছি: ",added:"কাজ যোগ হয়েছে।"},
+hi:{tag:"आपका स्मार्ट व्यक्तिगत सहायक",hello:"PRINCE AI में आपका स्वागत है",intro:"आपके ज्वेलरी व्यवसाय, Instagram और रोज़मर्रा के कामों के लिए एक सहायक।",language:"भाषा",install:"इंस्टॉल",chat:"AI चैट",chatSub:"तीन भाषाओं में सवाल पूछें",jewelry:"ज्वेलरी मैनेजर",jewelrySub:"उत्पाद विवरण और व्यापार सुझाव",instagram:"Instagram मैनेजर",instagramSub:"कैप्शन और कंटेंट आइडिया",tasks:"मेरे काम",tasksSub:"अपने रोज़मर्रा के काम व्यवस्थित करें",voice:"वॉइस असिस्टेंट",voiceSub:"वॉइस डेमो",reports:"बिज़नेस रिपोर्ट",reportsSub:"योजना और काम की निगरानी",chatTitle:"PRINCE AI से बात करें",firstMsg:"नमस्ते! भाषा चुनें और डेमो आज़माएँ।",send:"भेजें",chatNote:"डेमो मोड: लाइव AI अभी कनेक्ट नहीं है। आपके संदेश AI सर्वर पर नहीं भेजे जाते।",taskTitle:"मेरे काम",add:"जोड़ें",placeholder:"संदेश लिखें...",taskPlaceholder:"एक काम लिखें",demo:"यह शुरुआती डेमो है। लाइव AI के लिए AI कनेक्शन सेट करना होगा।",voiceUnsupported:"इस ब्राउज़र में वॉइस इनपुट उपलब्ध नहीं है।",heard:"मैंने सुना: ",added:"काम जोड़ दिया गया।"}
+};
+let lang="en";const $=id=>document.getElementById(id);
+function applyLang(){lang=$("lang").value;document.documentElement.lang=lang;document.querySelectorAll("[data-t]").forEach(el=>{const k=el.dataset.t;if(translations[lang][k])el.textContent=translations[lang][k]});$("msg").placeholder=translations[lang].placeholder;$("taskInput").placeholder=translations[lang].taskPlaceholder}
+$("lang").addEventListener("change",applyLang);
+function addBubble(txt,who){const d=document.createElement("div");d.className="bubble "+who;d.textContent=txt;$("chatlog").appendChild(d);$("chatlog").scrollTop=$("chatlog").scrollHeight}
+function send(){const v=$("msg").value.trim();if(!v)return;addBubble(v,"user");$("msg").value="";addBubble(translations[lang].demo,"bot")}
+$("send").onclick=send;$("msg").addEventListener("keydown",e=>{if(e.key==="Enter")send()});
+$("addTask").onclick=()=>{const v=$("taskInput").value.trim();if(!v)return;const li=document.createElement("li");li.textContent="• "+v;$("taskList").appendChild(li);$("taskInput").value=""};
+document.querySelectorAll("[data-section]").forEach(b=>b.onclick=()=>{const s=b.dataset.section;if(s==="chat"||s==="voice")$("chatSection").scrollIntoView({behavior:"smooth"});else if(s==="tasks")$("tasksSection").scrollIntoView({behavior:"smooth"});else{addBubble(b.querySelector("b").textContent+": "+translations[lang].demo,"bot");$("chatSection").scrollIntoView({behavior:"smooth"})}});
+$("mic").onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){addBubble(translations[lang].voiceUnsupported,"bot");return}const r=new SR();r.lang=lang==="bn"?"bn-BD":lang==="hi"?"hi-IN":"en-US";r.onresult=e=>{$("msg").value=e.results[0][0].transcript;send()};r.start()};
+let installPrompt;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;$("install").hidden=false});$("install").onclick=async()=>{if(installPrompt){installPrompt.prompt();installPrompt=null}else alert("Open your browser menu and choose 'Add to Home screen'.")};
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+</script>
+</body></html>

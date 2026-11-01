@@ -1,0 +1,11 @@
+{
+  "name": "PRINCE AI",
+  "short_name": "PRINCE AI",
+  "description": "Your multilingual personal and business assistant",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0d0e10",
+  "theme_color": "#111111",
+  "icons": []
+}
